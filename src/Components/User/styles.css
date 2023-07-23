@@ -1,0 +1,75 @@
+.login-form-container,
+.reset-password-form-container,
+.forgot-password-form-container {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	padding: 10px;
+	border: 5px solid #f1f1f1a7;
+	border-radius: 10px;
+	width: 50vw;
+	max-width: 500px;
+	box-sizing: border-box;
+}
+.title {
+	text-align: center;
+	font-size: 30px;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+
+.login-form,
+.reset-password-form,
+.forgot-password-form,
+.add-user-form {
+	padding: 2vmax;
+	width: 100%;
+}
+.login-form-forgot {
+	float: right;
+}
+.ant-col-rtl .login-form-forgot {
+	float: left;
+}
+.login-form-button,
+.reset-password-form-button,
+.forgot-password-form-btn {
+	width: 100%;
+	box-shadow: 0 4px 8px 0 rgba(22, 119, 255, 0.826);
+}
+
+.forgot-password-form-input {
+	width: 100%;
+	box-sizing: border-box;
+	border: 1px solid rgba(0, 0, 0, 0.267);
+	border-radius: 4px;
+	font: 300 0.9vmax;
+	outline: none;
+}
+
+@media screen and (max-width: 600px) {
+	.forgot-password-form-container {
+		background-color: white;
+	}
+	.title {
+		text-align: center;
+		font-size: 30px;
+		font-weight: bold;
+		margin-bottom: 20px;
+	}
+
+	.forgot-password-form {
+		padding: 5vmax;
+	}
+
+	.forgot-password-form-input {
+		padding: 2.5vmax 5vmax;
+		font: 300 1.7vmax cursive;
+	}
+
+	.forgot-password-form-btn {
+		font: 300 1.9vmax "Roboto";
+		padding: 1.8vmax;
+	}
+}
