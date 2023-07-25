@@ -44,6 +44,7 @@ export const login = (email, password) => async (dispatch) => {
 
 		dispatch({ type: LOGIN_SUCCESS, payload: data.user });
 	} catch (error) {
+		console.log("login error:", error);
 		dispatch({ type: LOGIN_FAIL, payload: error.response.data.message });
 	}
 };
@@ -99,9 +100,10 @@ export const verifyEmail = (token) => async (dispatch) => {
 		const config = { headers: { "Content-Type": "application/json" } };
 
 		const { data } = await axios.get(`/verifyEmail/${token}`, config);
-
+		console.log("verify email action data:", data);
 		dispatch({ type: VERIFY_EMAIL_SUCCESS, payload: data });
 	} catch (error) {
+		console.log("verify email action error:", error);
 		dispatch({
 			type: VERIFY_EMAIL_FAIL,
 			payload: error.response.data.message

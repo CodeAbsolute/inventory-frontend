@@ -52,13 +52,16 @@ export const getAllProducts = (category) => async (dispatch) => {
 		}
 
 		const { data } = await axios.get(link);
-
-		// console.log(`get all products data: ${data}`);
+		const products = data?.products;
+		products?.reverse();
+		data.products = products;
+		console.log(`get all products data: ${data}`);
 		dispatch({
 			type: ALL_PRODUCT_SUCCESS,
 			payload: data
 		});
 	} catch (error) {
+		console.log("get all products error:", error);
 		dispatch({
 			type: ALL_PRODUCT_FAIL,
 			payload: error.response.data.message

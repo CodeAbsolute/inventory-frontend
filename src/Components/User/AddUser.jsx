@@ -1,34 +1,27 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
 	ContactsOutlined,
-	LockOutlined,
 	MailOutlined,
 	UserOutlined
 } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Form, Input, InputNumber, Modal } from "antd";
+import { Button, Form, Input, InputNumber, Modal, message } from "antd";
 import "./styles.css";
-import MetaData from "../../MetaData";
 import { addNewUser, getAllUsers } from "../../actions/userAction";
 
 const AddUser = ({ showModal, closeModal }) => {
 	const [confirmLoading, setConfirmLoading] = useState(false);
 
 	const dispatch = useDispatch();
-	const { success, message } = useSelector((state) => state.addUser);
+	const { success } = useSelector((state) => state.addUser);
 
 	const [values, setValues] = useState({
 		name: "",
 		email: "",
-		password: "",
 		phone: ""
 	});
 
 	const handleOk = (e) => {
-		if (success) {
-			message.success("User Added Successfully");
-		}
-
 		setConfirmLoading(true);
 		setTimeout(() => {
 			closeModal();
@@ -42,17 +35,17 @@ const AddUser = ({ showModal, closeModal }) => {
 		const myForm = new FormData();
 		myForm.set("name", values.name);
 		myForm.set("email", values.email);
-		myForm.set("password", values.password);
 		myForm.set("phone", +values.phone);
 		dispatch(addNewUser(myForm));
+		message.success("User Added Successfully");
 		dispatch(getAllUsers());
 	};
 
 	return (
 		<>
-			{/* <MetaData title={"Add User"} /> */}
 			<Modal
 				title='Add User'
+				maskClosable={false}
 				open={showModal}
 				centered
 				onOk={handleOk}
@@ -125,35 +118,7 @@ const AddUser = ({ showModal, closeModal }) => {
 							placeholder='Enter your email address'
 						/>
 					</Form.Item>
-					<Form.Item
-						name='password'
-						value={values.password}
-						onChange={(e) => setValues({ ...values, password: e.target.value })}
-						rules={[
-							{
-								required: true,
-								message: "Please input your Password!"
-							},
-							{
-								min: 6,
-								message: "Password must be minimum of 6 characters."
-							},
-							{
-								max: 12,
-								message: "Password must be maximum of 12 characters."
-							}
-						]}>
-						<Input
-							prefix={
-								<LockOutlined
-									className='site-form-item-icon'
-									style={{ marginRight: "10px" }}
-								/>
-							}
-							type='password'
-							placeholder='Enter Password'
-						/>
-					</Form.Item>
+
 					<Form.Item
 						name='phone'
 						value={values.phone}

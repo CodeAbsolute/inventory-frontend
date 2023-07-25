@@ -160,7 +160,7 @@ const ProductTable = () => {
 					<Form.Item>
 						<Upload
 							defaultFileList={defaultFileList}
-              listType='picture'
+							listType='picture'
 							multiple
 							accept='.jpg, .png, .jpeg'
 							maxCount={4}>

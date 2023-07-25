@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Popconfirm, Space, Table, message } from "antd";
+import { Button, Image, Popconfirm, Space, Table, message } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts, deleteProduct } from "../../actions/productAction";
@@ -10,12 +10,12 @@ import EditProduct from "./EditProduct";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 const ProductListings = () => {
-	// const editProduct = (record) => {
-	// 	console.log(record);
-	// 	setProduct(record.key);
-	// 	setEditing(true);
-	// 	setTableloading(true);
-	// };
+	const editProduct = (record) => {
+		console.log(record);
+		setProduct(record.key);
+		setEditing(true);
+		setTableloading(true);
+	};
 
 	const deleteProductFromTable = (id) => {
 		// console.log("delete product");
@@ -31,13 +31,32 @@ const ProductListings = () => {
 			title: "Product Image",
 			dataIndex: "images",
 			key: "images",
-			render: (images) => (
-				<img
-					src={`http://localhost:8000/${images[0]?.path}`}
-					alt='product image'
-					style={{ padding: 0, margin: 0, width: "100%", height: "50px" }}
-				/>
-			)
+			render: (images) => {
+				// console.log("images==>", images);
+				const imagesPreview = images?.map(
+					(image) => `http://localhost:8000/${image?.path}`
+				);
+				// console.log(imagesPreview);
+				return imagesPreview ? (
+					<Image.PreviewGroup items={imagesPreview}>
+						<Image
+							src={`http://localhost:8000/${images[0]?.path}`}
+							fallback='https://bubbleerp.sysfosolutions.com/img/default-pro.jpg'
+							style={{
+								padding: 0,
+								margin: 0,
+								width: "100%",
+								height: "50px"
+							}}
+						/>
+					</Image.PreviewGroup>
+				) : (
+					<Image
+						src={`https://bubbleerp.sysfosolutions.com/img/default-pro.jpg`}
+						style={{ padding: 0, margin: 0, width: "100%", height: "50px" }}
+					/>
+				);
+			}
 		},
 		{
 			title: "Product ID",
@@ -90,11 +109,13 @@ const ProductListings = () => {
 			key: "action",
 			render: (_, record) => (
 				<Space size='small'>
-					<Link to={`/product/update/${record.key}`}>Edit </Link>
-					{/* <EditOutlined onClick={() => editProduct(record)} /> */}
+					{/* <Link to={`/product/update/${record.key}`}>Edit </Link> */}
+					<Button type='link' onClick={() => editProduct(record)}>
+						Edit
+					</Button>
 					<Popconfirm
-						title='Delete this User?'
-						description='Are you sure to delete this user?'
+						title='Delete this product?'
+						description='Are you sure to delete this product?'
 						okText='Yes'
 						cancelText='No'
 						onConfirm={() => deleteProductFromTable(record.key)}>
@@ -105,14 +126,14 @@ const ProductListings = () => {
 		}
 	];
 
-	// const [editing, setEditing] = useState(false);
+	const [editing, setEditing] = useState(false);
 	const [visible, setVisible] = useState(false);
 	const [tableloading, setTableloading] = useState(false);
 	const dispatch = useDispatch();
 	const { loading, error, products } = useSelector((state) => state.products);
-	// const [product, setProduct] = useState({});
+	const [product, setProduct] = useState();
 	// Adding the key property to the users array
-	const data = products?.reverse()?.map((product) => {
+	const data = products?.map((product) => {
 		return {
 			key: product.id,
 			...product
@@ -126,8 +147,9 @@ const ProductListings = () => {
 		}
 		setTableloading(true);
 		dispatch(getAllProducts());
+
 		setTableloading(false);
-	}, [dispatch, error]);
+	}, []);
 
 	return (
 		<>
@@ -171,14 +193,16 @@ const ProductListings = () => {
 							setTableloading(false);
 						}}
 					/>
-					{/* <EditProduct
-						isEditing={editing}
-						productId={product}
-						closeModal={() => {
-							setEditing(false);
-							setTableloading(false);
-						}}
-					/> */}
+					{editing && (
+						<EditProduct
+							showModal={editing}
+							productId={product}
+							closeModal={() => {
+								setEditing(false);
+								setTableloading(false);
+							}}
+						/>
+					)}
 				</>
 			)}
 		</>

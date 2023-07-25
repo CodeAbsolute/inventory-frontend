@@ -106,14 +106,14 @@ export const addUserReducer = (state = {}, action) => {
 			return {
 				...state,
 				loading: false,
-				success: action.payload.success,
+				success: true,
 				message: action.payload.message
 			};
 		case ADD_USER_FAIL:
 			return {
 				...state,
 				loading: false,
-
+				success: false,
 				error: action.payload
 			};
 

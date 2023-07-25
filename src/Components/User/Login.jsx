@@ -41,7 +41,6 @@ const Login = ({ history }) => {
 			) : (
 				<div className='login-form-container'>
 					<MetaData title={"Login Page"} />
-					{/* {contextHolder} */}
 					<h1 className='title'>Login</h1>
 					<Form
 						name='normal_login'
