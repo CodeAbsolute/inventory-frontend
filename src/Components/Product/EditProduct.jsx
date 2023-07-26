@@ -14,12 +14,11 @@ import {
 import { UploadOutlined } from "@ant-design/icons";
 import {
 	getAllCategories,
+	getAllProducts,
 	getProductDetails,
 	updateProduct
 } from "../../actions/productAction";
 import TextArea from "antd/es/input/TextArea";
-import MetaData from "../../MetaData";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import { UPDATE_PRODUCT_RESET } from "../../constants/productConstants";
 import Loader from "../Layouts/Loader/Loader";
 
@@ -50,17 +49,17 @@ const EditProductModal = ({ showModal, closeModal, productId }) => {
 		fileList: selectedProduct.images,
 		maxCount: 4
 	};
-	console.log("selectedProduct: ", selectedProduct);
+	// console.log("selectedProduct: ", selectedProduct);
 	useEffect(() => {
 		dispatch(getProductDetails(productId));
 		// console.log("useEffect product details: ", product);
 	}, [productId]);
-	console.log("product: ", product);
+	// console.log("product: ", product);
 	useEffect(() => {
 		const defaultFileList = product?.images?.map((image, i) => {
-			console.log("image: ", image);
+			// console.log("image: ", image);
 			return {
-				uid: i,
+				uid: image?.id,
 				name: `${image?.path}`.slice(9), // for removing products/ from the path
 				status: "done",
 				url: "http://localhost:8000/" + image?.path
@@ -95,18 +94,37 @@ const EditProductModal = ({ showModal, closeModal, productId }) => {
 		myForm.set("category_id", +selectedProduct.categoryId);
 		myForm.set("in_stock", selectedProduct.inStock);
 		myForm.set("user_id", selectedProduct.userId);
+		const onlyDeleteSelectedImagesArray = [];
+		const saveImagesArray = [];
 
 		for (let i = 0; i < selectedProduct.images.length; i++) {
 			if (images[i].originFileObj) {
 				myForm.append("images[]", images[i].originFileObj);
 			} else {
-				myForm.append("old_images[]", images[i]);
+				saveImagesArray.push(images[i].uid);
 			}
 		}
+		// console.log("saveImagesArray: ", saveImagesArray);
+		for (let i = 0; i < product.images.length; i++) {
+			// console.log("product.images[i].id: ", product.images[i].id);
+			const image = saveImagesArray.find(
+				(imageId) => imageId === product.images[i].id
+			);
+			if (!image) onlyDeleteSelectedImagesArray.push(product.images[i].id);
+		}
+		// console.log(
+		// 	"onlyDeleteSelectedImagesArray: ",
+		// 	onlyDeleteSelectedImagesArray
+		// );
+		myForm.append(
+			"onlyDeleteSelectedImagesArray",
+			JSON.stringify(onlyDeleteSelectedImagesArray)
+		);
 		// console.log("myForm: ", myForm);
 		dispatch(updateProduct(productId, myForm));
 		if (isUpdated) message.success("Product Updated Successfully", 2000);
 		dispatch({ type: UPDATE_PRODUCT_RESET });
+		dispatch(getAllProducts());
 	};
 	const { name, desc, price, categoryId, inStock, images } = selectedProduct;
 

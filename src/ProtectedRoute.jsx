@@ -3,6 +3,7 @@ import { Redirect, Route } from "react-router-dom/cjs/react-router-dom.min";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
 	const { loading, isAuthenticated } = useSelector((state) => state.user);
+	const history = useHistory();
 
 	return (
 		<>
@@ -11,7 +12,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
 					{...rest}
 					render={(props) => {
 						if (isAuthenticated === false) {
-							return <Redirect to='/login' />;
+							history.push("/");
 						}
 						return <Component {...props} />;
 					}}

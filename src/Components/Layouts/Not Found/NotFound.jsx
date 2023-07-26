@@ -11,7 +11,7 @@ const NotFound = () => {
 
 	useEffect(() => {
 		if (!isAuthenticated) {
-			history.push("/login");
+			history.push("/");
 		}
 	}, []);
 

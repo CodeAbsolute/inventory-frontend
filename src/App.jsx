@@ -30,6 +30,7 @@ function App() {
 			{isAuthenticated && <Header />}
 			<Switch>
 				<Route exact path='/' component={Login} />
+				<Route exact path='/login' component={Login} />
 				<Route exact path='/forgotPassword' component={ForgotPassword} />
 				<Route exact path='/resetPassword/:token' component={ResetPassword} />
 				<Route exact path='/verifyEmail/:token' component={VerifyEmail} />
