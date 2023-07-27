@@ -27,8 +27,8 @@ const EditProductModal = ({ showModal, closeModal, productId }) => {
 	const dispatch = useDispatch();
 
 	const { categories } = useSelector((state) => state.categories);
-	const { product } = useSelector((state) => state.productDetails);
-	const { loading, isUpdated } = useSelector((state) => state.product);
+	const { product, loading } = useSelector((state) => state.productDetails);
+	const { isUpdated } = useSelector((state) => state.product);
 
 	const [selectedProduct, setSelectedProduct] = useState({});
 	const [confirmLoading, setConfirmLoading] = useState(false);
@@ -130,31 +130,31 @@ const EditProductModal = ({ showModal, closeModal, productId }) => {
 
 	return (
 		<>
-			{loading ? (
-				<Loader />
-			) : (
-				<>
-					<Modal
-						title='Edit Product'
-						maskClosable={false}
-						open={showModal}
-						centered
-						onOk={handleOk}
-						confirmLoading={confirmLoading}
-						onCancel={closeModal}
-						footer={[
-							<Button key='cancel' onClick={closeModal}>
-								Cancel
-							</Button>,
-							<Button
-								key='submit'
-								type='primary'
-								htmlType='submit'
-								loading={confirmLoading}
-								onClick={handleOk}>
-								Submit
-							</Button>
-						]}>
+			<Modal
+				title='Edit Product'
+				maskClosable={false}
+				open={showModal}
+				centered
+				onOk={handleOk}
+				confirmLoading={confirmLoading}
+				onCancel={closeModal}
+				footer={[
+					<Button key='cancel' onClick={closeModal}>
+						Cancel
+					</Button>,
+					<Button
+						key='submit'
+						type='primary'
+						htmlType='submit'
+						loading={confirmLoading}
+						onClick={handleOk}>
+						Submit
+					</Button>
+				]}>
+				{loading ? (
+					<Loader />
+				) : (
+					<>
 						<Form
 							encType='multipart/form-data'
 							name='editProduct'
@@ -297,9 +297,9 @@ const EditProductModal = ({ showModal, closeModal, productId }) => {
 								</Upload>
 							</Form.Item>
 						</Form>
-					</Modal>
-				</>
-			)}
+					</>
+				)}
+			</Modal>
 		</>
 	);
 };

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Space, message } from "antd";
-import { Link } from "react-router-dom/cjs/react-router-dom";
+import { Link } from "react-router-dom";
 import "./styles.css";
 import MetaData from "../../MetaData";
 import { useDispatch, useSelector } from "react-redux";

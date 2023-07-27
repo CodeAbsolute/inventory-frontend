@@ -34,10 +34,9 @@ const ResetPassword = ({ history, match }) => {
 
 		if (success) {
 			message.success("Password Updated Successfully");
-
 			history.push("/login");
 		}
-	}, [dispatch, error, message, history, success]);
+	}, [error, success]);
 
 	return (
 		<>
@@ -51,25 +50,6 @@ const ResetPassword = ({ history, match }) => {
 						name='reset-password-form'
 						className='reset-password-form'
 						onFinish={resetPasswordSubmit}>
-						<Form.Item
-							name='email'
-							value={email}
-							onChange={(e) => setEmail(e.target.value)}
-							rules={[
-								{
-									required: true,
-									message: "Please input your Username!"
-								},
-								{
-									type: "email",
-									message: "The input is not valid E-mail!"
-								}
-							]}>
-							<Input
-								prefix={<UserOutlined className='site-form-item-icon' />}
-								placeholder='Username'
-							/>
-						</Form.Item>
 						<Form.Item
 							name='password'
 							value={password}
@@ -110,6 +90,16 @@ const ResetPassword = ({ history, match }) => {
 								{
 									max: 20,
 									message: "Password must be maximum 20 characters."
+								},
+								{
+									validator: (_, value) =>
+										value === password
+											? Promise.resolve()
+											: Promise.reject(
+													new Error(
+														"The two passwords that you entered do not match!"
+													)
+											  )
 								}
 							]}>
 							<Input

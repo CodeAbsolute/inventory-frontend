@@ -37,7 +37,7 @@ const AddUser = ({ showModal, closeModal }) => {
 		myForm.set("email", values.email);
 		myForm.set("phone", +values.phone);
 		dispatch(addNewUser(myForm));
-		message.success("User Added Successfully");
+		if (success) message.success("User Added Successfully");
 		dispatch(getAllUsers());
 	};
 

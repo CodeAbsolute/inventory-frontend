@@ -1,15 +1,14 @@
 import React, { useEffect } from "react";
 import { message } from "antd";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { verifyEmail } from "../../actions/userAction";
 
-function VerifyEmail({ match }) {
+function VerifyEmail({ history, match }) {
 	const dispatch = useDispatch();
-	const history = useHistory();
+	const { success } = useSelector((state) => state.verifyEmail);
 	useEffect(() => {
 		dispatch(verifyEmail(match.params.token));
-		message.success("Email Verified Successfully");
+		if (success) message.success("Email Verified Successfully");
 		history.push(`/resetPassword/${match.params.token}`);
 		dispatch({ type: "CLEAR_ERRORS" });
 	}, []);

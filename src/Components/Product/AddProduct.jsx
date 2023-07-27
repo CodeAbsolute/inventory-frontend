@@ -33,7 +33,7 @@ const AddProduct = ({ showModal, closeModal }) => {
 		name: "",
 		in_stock: "",
 		category_id: "Select Category",
-		user_id: user.id,
+		user_id: user.id ? user.id : "",
 		description: "",
 		price: "",
 		images: ""
@@ -111,7 +111,7 @@ const AddProduct = ({ showModal, closeModal }) => {
 			myForm.append("images[]", values.images[i].originFileObj);
 		}
 		dispatch(createProduct(myForm));
-		message.success("Product Added Successfully");
+		if (success) message.success("Product Added Successfully");
 		dispatch(getAllProducts());
 	};
 
@@ -222,7 +222,7 @@ const AddProduct = ({ showModal, closeModal }) => {
 								console.log(value);
 								return setValues({ ...values, category_id: value });
 							}}>
-							{categories.map((category) => (
+							{categories?.map((category) => (
 								<Option key={category.id}>
 									{`${category.name}`.charAt(0).toUpperCase() +
 										`${category.name}`.slice(1)}

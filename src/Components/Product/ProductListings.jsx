@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Button, Image, Popconfirm, Space, Table, message } from "antd";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProducts, deleteProduct } from "../../actions/productAction";
+import {
+	getAllProducts,
+	deleteProduct,
+	clearErrors
+} from "../../actions/productAction";
 import MetaData from "../../MetaData";
 import Loader from "../Layouts/Loader/Loader";
 import AddProduct from "./AddProduct";
 import EditProduct from "./EditProduct";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
-
+import "./product_styles.css";
 const ProductListings = () => {
 	const editProduct = (record) => {
-		console.log(record);
+		// console.log(record);
 		setProduct(record.key);
 		setEditing(true);
 		setTableloading(true);
@@ -147,7 +150,6 @@ const ProductListings = () => {
 		}
 		setTableloading(true);
 		dispatch(getAllProducts());
-
 		setTableloading(false);
 	}, []);
 
@@ -186,13 +188,15 @@ const ProductListings = () => {
 							pagination={{ pageSize: 5, position: ["bottomCenter"] }}
 						/>
 					</div>
-					<AddProduct
-						showModal={visible}
-						closeModal={() => {
-							setVisible(false);
-							setTableloading(false);
-						}}
-					/>
+					{visible && (
+						<AddProduct
+							showModal={visible}
+							closeModal={() => {
+								setVisible(false);
+								setTableloading(false);
+							}}
+						/>
+					)}
 					{editing && (
 						<EditProduct
 							showModal={editing}
